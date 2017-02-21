@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="comp650_pkg" type="planning_service_client_test.py" name="planning_service_client_test" output="screen"/>
+</launch>

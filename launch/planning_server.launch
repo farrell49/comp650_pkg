@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="comp650_pkg" type="planning_service.py" name="planning_server" output="screen"/>
+</launch>

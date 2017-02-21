@@ -1,0 +1,5 @@
+string REQUEST_TYPE
+trajectory_msgs/JointTrajectory JOINT_TRAJECTORY
+---
+bool success
+float32[] joint_states
