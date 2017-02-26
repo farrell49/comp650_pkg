@@ -21,7 +21,7 @@ class PlanningServiceClient(object):
         gripper_current_states = self.request_joint_states('gripper')
         self.gripper_state_initial = gripper_current_states[3]
 
-        with open(rospack.get_path("comp650_pkg") + '/plans/ur5-sussman-working.tmp') as tmp:
+        with open(rospack.get_path("comp650_pkg") + '/plans/ur5-sussman.tmp') as tmp:
             for line in tmp:
                 line_temp = line.split()
                 #rospy.loginfo('line_temp = {}'.format(line_temp))
@@ -213,6 +213,20 @@ class PlanningServiceClient(object):
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
         return True
+
+    def request_planning_scene():
+        try:
+            scene_request = rospy.ServiceProxy('get_planning_scene', GetPlanningScene)
+            req = PlanningSceneComponents()
+            #build using the bit operators found in the PlanningSceneComponents msg()
+            req.components = req.WORLD_OBJECT_NAMES + req.WORLD_OBJECT_GEOMETRY
+
+            resp = scene_request(req)
+            rospy.logdebug('request_planning_scene() -- resp = {}'.format(resp))
+
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+        return resp
 
 if __name__ == "__main__":
     rospy.init_node("planning_service_client_test")

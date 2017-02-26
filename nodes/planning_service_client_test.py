@@ -96,6 +96,7 @@ def request_planning_scene():
     try:
         scene_request = rospy.ServiceProxy('get_planning_scene', GetPlanningScene)
         req = PlanningSceneComponents()
+        #build using the bit operators found in the PlanningSceneComponents msg
         req.components = req.WORLD_OBJECT_NAMES + req.WORLD_OBJECT_GEOMETRY
 
         resp = scene_request(req)
