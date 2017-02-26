@@ -169,7 +169,7 @@ class PlanningService(object):
             return False
     '''
 
-    def planning_service(self):
+    def __init__(self):
         self.s = rospy.Service('planning_server', PlanningRequest, self.handle_planning_service_request)
 
         moveit_commander.roscpp_initialize(sys.argv)  #initialize movit commander
@@ -192,4 +192,3 @@ class PlanningService(object):
 if __name__=='__main__':
   rospy.init_node('planning_server')
   planning_service = PlanningService()
-  planning_service.planning_service()
