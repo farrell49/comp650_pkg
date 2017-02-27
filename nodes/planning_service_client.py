@@ -7,7 +7,8 @@ from std_msgs.msg import Header
 from trajectory_msgs.msg import JointTrajectory, MultiDOFJointTrajectory, JointTrajectoryPoint
 from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion
 import moveit_commander
-import moveit_msgs.msg
+from moveit_msgs.msg import *
+from moveit_msgs.srv import *
 import rosparam
 import rospkg
 from yaml import load
@@ -21,7 +22,7 @@ class PlanningServiceClient(object):
         gripper_current_states = self.request_joint_states('gripper')
         self.gripper_state_initial = gripper_current_states[3]
 
-        with open(rospack.get_path("comp650_pkg") + '/plans/ur5-sussman.tmp') as tmp:
+        with open(rospack.get_path("comp650_pkg") + '/plans/ur5-sussman-working.tmp') as tmp:
             for line in tmp:
                 line_temp = line.split()
                 #rospy.loginfo('line_temp = {}'.format(line_temp))
@@ -214,7 +215,7 @@ class PlanningServiceClient(object):
             print "Service call failed: %s"%e
         return True
 
-    def request_planning_scene():
+    def request_planning_scene(self):
         try:
             scene_request = rospy.ServiceProxy('get_planning_scene', GetPlanningScene)
             req = PlanningSceneComponents()
@@ -236,7 +237,7 @@ if __name__ == "__main__":
     ps_client = PlanningServiceClient()
 
     rospack = rospkg.RosPack()
-    if ps_client.execute_tmkit_plan():
+    if ps_client.request_planning_scene():
         rospy.loginfo("function call success")
     else:
         rospy.loginfo("function call FAIL")
