@@ -223,7 +223,7 @@ class PlanningServiceClient(object):
             req.components = req.WORLD_OBJECT_NAMES + req.WORLD_OBJECT_GEOMETRY
 
             resp = scene_request(req)
-            rospy.logdebug('request_planning_scene() -- resp = {}'.format(resp))
+            rospy.loginfo('request_planning_scene() -- resp = {}'.format(resp))
 
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
