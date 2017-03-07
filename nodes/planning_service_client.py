@@ -3,6 +3,7 @@
 import sys
 import rospy
 from comp650_pkg.srv import *
+from trajectory_blender.srv import TrajectoryRequest
 from std_msgs.msg import Header
 from trajectory_msgs.msg import JointTrajectory, MultiDOFJointTrajectory, JointTrajectoryPoint
 from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion
@@ -207,6 +208,18 @@ class PlanningServiceClient(object):
                 REQUEST_TYPE = "execute_manipulator"
 
             TRAJECTORY = trajectory
+            if trajectory.points[0]:
+                rospy.loginfo('trajectory does not have velocities')
+                try:
+                    blend_request = rospy.ServiceProxy('ros_trajectory_blender', TrajectoryRequest)
+
+                    response = blend_request(trajectory, 1, .5)
+                    rospy.loginfo('response = {}'.format(response))
+                    rospy.loginfo('trajectory in = {}'.format(trajectory))
+                    trajectory = response.output_trajectory
+                    rospy.loginfo('trajectory out = {}'.format(trajectory))
+                except rospy.ServiceException, e:
+                    print "Service call failed: %s"%e
 
             rospy.loginfo("Requesting Execute")
             response = plan_request(REQUEST_TYPE, TRAJECTORY)
